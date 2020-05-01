@@ -6,7 +6,7 @@
 import Foundation
 
 // O(Karatsuba, recursive algorithm) = O(n*logn)
-func karatsubaMultiply(x: [Int], y: [Int]) -> [Int] {
+/*func karatsubaMultiply(x: [Int], y: [Int]) -> [Int] {
 
     // if basecase: n = 1
         // if return x[0] * y[0]
@@ -23,7 +23,7 @@ func karatsubaMultiply(x: [Int], y: [Int]) -> [Int] {
         // return padded ac + padded abcd + bd
     
     return [3, 0]
-}
+}*/
 
 // O(n^2)
 func schoolMultiply(x: [Int], y: [Int]) -> [Int] {
