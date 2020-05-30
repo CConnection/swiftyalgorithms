@@ -21,39 +21,24 @@ enum UnorderedArrayListError: Error {
 
 struct UnorderedArrayList: Dictionary {
     var data: [Int]
-    var lastIndex: Int
 
     init() {
         data = []
-        lastIndex = -1
     }
 
     init(array: [Int]) {
         data = array
-        lastIndex = data.count - 1
     }
 
     subscript(index: Int) -> Int { data[index] }
-
-    // O(n) amortized as the copies always includes halfs, see skienna
-    private mutating func grow() {
-        for _ in 0..<data.count {
-            data.append(0)
-        }
-    }
-
-    // O(n) amortized as the copies always includes halfs, see skienna
-    private mutating func shrink() {
-        // TODO: Implement shrinking function
-    }
 
     // O(n)
     func search(number: Int) -> [Int] {
         var result: [Int] = []
 
-        if lastIndex >= 0 {
-            for index in 0...lastIndex {
-                if data[index] == number {
+        if data.count > 0 {
+            for (index, value) in data.enumerated() {
+                if value == number {
                     result.append(index)
                 }
             }
@@ -64,31 +49,22 @@ struct UnorderedArrayList: Dictionary {
 
     // O(1)
     mutating func insert(number: Int) {
-        if data.count == 0 {
-            data = Array(repeating: number, count: 1)
-            lastIndex = 0
-        } else {
-            if lastIndex == data.count - 1 {
-                grow()
-            }
-
-            lastIndex += 1
-            data[lastIndex] = number
-        }
+        data.append(number)
     }
 
     // O(1)
     mutating func delete(at index: Int) throws {
-        // TODO: Test it's usage
-        guard index <= lastIndex else {
+        guard index >= 0 && index < data.count else {
             throw UnorderedArrayListError.OutOfBound
         }
 
-        if lastIndex != 0 && index != lastIndex {
-            data[index] = data[lastIndex]
+        if index != data.startIndex && index != data.endIndex {
+            if let last = data.last {
+                data[index] = last
+            }
         }
 
-        lastIndex -= 1
+        data.removeLast()
     }
 
     // O(3n)
@@ -97,9 +73,9 @@ struct UnorderedArrayList: Dictionary {
         var currentPredecessor = 0
 
         var notFound = true
-        for index in 0...lastIndex {
-            if data[index] < number {
-                currentPredecessor = data[index]
+        for value in data {
+            if value < number {
+                currentPredecessor = value
                 notFound = false
                 break
             }
@@ -109,15 +85,15 @@ struct UnorderedArrayList: Dictionary {
             return []
         }
 
-        for index in 0...lastIndex {
-            if data[index] < number && data[index] > currentPredecessor {
-                currentPredecessor = data[index]
+        for value in data {
+            if value < number && value > currentPredecessor {
+                currentPredecessor = value
             }
         }
 
         var result: [Int] = []
-        for index in 0...lastIndex {
-            if data[index] == currentPredecessor {
+        for (index, value) in data.enumerated() {
+            if value == currentPredecessor {
                 result.append(index)
             }
         }
@@ -129,9 +105,9 @@ struct UnorderedArrayList: Dictionary {
         var currentSuccessor = 0
 
         var notFound = true
-        for index in 0...lastIndex {
-            if data[index] > number {
-                currentSuccessor = data[index]
+        for value in data {
+            if value > number {
+                currentSuccessor = value
                 notFound = false
                 break
             }
@@ -141,15 +117,15 @@ struct UnorderedArrayList: Dictionary {
             return []
         }
 
-        for index in 0...lastIndex {
-            if data[index] > number && data[index] < currentSuccessor {
-                currentSuccessor = data[index]
+        for value in data {
+            if value > number && value < currentSuccessor {
+                currentSuccessor = value
             }
         }
 
         var result: [Int] = []
-        for index in 0...lastIndex {
-            if data[index] == currentSuccessor {
+        for (index, value) in data.enumerated() {
+            if value == currentSuccessor {
                 result.append(index)
             }
         }
@@ -157,14 +133,14 @@ struct UnorderedArrayList: Dictionary {
     }
 
     func min() -> Int? {
-        guard lastIndex != -1 else {
+        guard data.count != 0 else {
             return nil
         }
 
         var minimum = data[0]
-        for index in 0...lastIndex {
-            if data[index] < minimum {
-                minimum = data[index]
+        for value in data {
+            if value < minimum {
+                minimum = value
             }
         }
 
@@ -172,14 +148,14 @@ struct UnorderedArrayList: Dictionary {
     }
 
     func max() -> Int? {
-        guard lastIndex != -1 else {
+        guard data.count != 0 else {
             return nil
         }
 
         var maximum = data[0]
-        for index in 0...lastIndex {
-            if data[index] > maximum {
-                maximum = data[index]
+        for value in data {
+            if value > maximum {
+                maximum = value
             }
         }
 
@@ -187,40 +163,30 @@ struct UnorderedArrayList: Dictionary {
     }
 }
 
+enum OrderedArrayListError: Error {
+    case OutOfBound
+}
+
+
 struct OrderedArrayList {
     var data: [Int]
-    var lastIndex: Int
 
     init() {
         data = []
-        lastIndex = -1
     }
 
     init(array: [Int]) {
         data = array
-        lastIndex = data.count - 1
     }
 
     subscript(index: Int) -> Int { data[index] }
 
-    // O(n) amortized as the copies always includes halfs, see skienna
-    private mutating func grow() {
-        for _ in 0..<data.count {
-            data.append(0)
-        }
-    }
-
-    // O(n) amortized as the copies always includes halfs, see skienna
-    private mutating func shrink() {
-        // TODO: Implement shrinking function
-    }
-
     func search(number: Int) -> [Int] {
         var result: [Int] = []
 
-        if lastIndex >= 0 {
-            for index in 0...lastIndex {
-                if data[index] == number {
+        if data.count > 0 {
+            for (index, value) in data.enumerated() {
+                if value == number {
                     result.append(index)
                 }
             }
@@ -230,47 +196,44 @@ struct OrderedArrayList {
     }
 
     mutating func insert(number: Int) {
-        if lastIndex == -1 {
+        if data.count == 0 {
             data.append(number)
-            lastIndex += 1
         } else {
-            if lastIndex == data.count - 1 {
-                grow()
-            }
-
             var temp = 0
-            for index in 0...lastIndex {
-                if number > data[index] {
+            for (index, value) in data.enumerated() {
+                if number > value {
                     temp = index + 1
                 } else {
                     break
                 }
             }
-            if temp <= lastIndex  {
-                for index in (temp...lastIndex).reversed() {
-                    data[index + 1] = data[index]
-                }
-            }
 
-            data[temp] = number
-            lastIndex += 1
+            data.insert(number, at: temp)
         }
     }
-    mutating func delete(at index: Int) throws {}
+
+    mutating func delete(at index: Int) throws {
+        guard index >= 0 && index < data.count else {
+            throw OrderedArrayListError.OutOfBound
+        }
+
+        if index == data.startIndex {
+            data.removeFirst()
+        } else if index == data.endIndex {
+            data.removeLast()
+        } else {
+            data.remove(at: index)
+        }
+    }
+
     func min() -> Int? {
-        guard lastIndex != -1 else {
-            return nil
-        }
-
-        return data[0]
+        return data.first
     }
+
     func max() -> Int? {
-        guard lastIndex != -1 else {
-            return nil
-        }
-
-        return data[lastIndex]
+        return data.last
     }
+
     func predecessor(of number: Int) -> [Int] { return []}
     func successor(of number: Int) -> [Int] { return []}
 }

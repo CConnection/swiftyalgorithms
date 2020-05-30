@@ -70,15 +70,6 @@ class ArrayListTests: QuickSpec {
 
                         expect(arr[0]).to(be(expected))
                     }
-
-                    it("increases the lastIndex by one") {
-                        let expected = 0
-                        var arr = UnorderedArrayList()
-
-                        arr.insert(number: expected)
-
-                        expect(arr.lastIndex).to(be(expected))
-                    }
                 }
                 context("when array is not empty") {
                     it("inserts an element into the unordered array") {
@@ -98,34 +89,16 @@ class ArrayListTests: QuickSpec {
                         var arr = UnorderedArrayList()
                         expect {try arr.delete(at: 0)}.to(throwError(UnorderedArrayListError.OutOfBound))
                     }
-
-                    it("returns the same lastIndex") {
-                        var arr = UnorderedArrayList(array: [0])
-                        let expected = arr.lastIndex
-
-                        try? arr.delete(at: 1)
-
-                        expect(arr.lastIndex).to(be(expected))
-                    }
                 }
 
                 context("when array is not empty") {
-                    it("decreases the lastIndex by one") {
-                        let expected = -1
-                        var arr = UnorderedArrayList(array: [0])
-
-                        try? arr.delete(at: 0)
-
-                        expect(arr.lastIndex).to(be(expected))
-                    }
-
                     it("contains all remaining elements") {
                         let expected = [3,1,7,0]
                         var arr = UnorderedArrayList(array: [0,7,3,4,1])
 
                         try? arr.delete(at: 3)
 
-                        expect(arr.data[...arr.lastIndex]).to(contain(expected))
+                        expect(arr.data).to(contain(expected))
                     }
 
                     context("when array is empty after deletion") {
@@ -354,15 +327,6 @@ class ArrayListTests: QuickSpec {
 
                         expect(arr[0]).to(be(expected))
                     }
-
-                    it("increases the lastIndex by one") {
-                        let expected = 0
-                        var arr = OrderedArrayList()
-
-                        arr.insert(number: 10)
-
-                        expect(arr.lastIndex).to(be(expected))
-                    }
                 }
                 context("when array is not empty") {
                     context("when element will be inserted at the beginning") {
@@ -372,7 +336,7 @@ class ArrayListTests: QuickSpec {
 
                             arr.insert(number: 0)
 
-                            expect(Array(arr.data[...arr.lastIndex])).to(elementsEqual(expected))
+                            expect(arr.data).to(elementsEqual(expected))
                         }
                     }
                     context("when element will be inserted at the end") {
@@ -382,7 +346,7 @@ class ArrayListTests: QuickSpec {
 
                             arr.insert(number: 5)
 
-                            expect(Array(arr.data[...arr.lastIndex])).to(elementsEqual(expected))
+                            expect(arr.data).to(elementsEqual(expected))
                         }
                     }
                     context("when element will be inserted at in between") {
@@ -392,59 +356,41 @@ class ArrayListTests: QuickSpec {
 
                             arr.insert(number: 5)
 
-                            expect(Array(arr.data[...arr.lastIndex])).to(elementsEqual(expected))
+                            expect(arr.data).to(elementsEqual(expected))
                         }
                     }
                 }
             }
 
             context("when deleting an item") {
-//                context("when given index is out of bound") {
-//                    it("throws a out of bound error") {
-//                        var arr = UnorderedArrayList()
-//                        expect {try arr.delete(at: 0)}.to(throwError(UnorderedArrayListError.OutOfBound))
-//                    }
-//
-//                    it("returns the same lastIndex") {
-//                        var arr = UnorderedArrayList(array: [0])
-//                        let expected = arr.lastIndex
-//
-//                        try? arr.delete(at: 1)
-//
-//                        expect(arr.lastIndex).to(be(expected))
-//                    }
-//                }
-//
-//                context("when array is not empty") {
-//                    it("decreases the lastIndex by one") {
-//                        let expected = -1
-//                        var arr = UnorderedArrayList(array: [0])
-//
-//                        try? arr.delete(at: 0)
-//
-//                        expect(arr.lastIndex).to(be(expected))
-//                    }
-//
-//                    it("contains all remaining elements") {
-//                        let expected = [3,1,7,0]
-//                        var arr = UnorderedArrayList(array: [0,7,3,4,1])
-//
-//                        try? arr.delete(at: 3)
-//
-//                        expect(arr.data[...arr.lastIndex]).to(contain(expected))
-//                    }
-//
-//                    context("when array is empty after deletion") {
-//                        it("returns empty array when searched after deleted from array") {
-//                            var arr = UnorderedArrayList(array: [0])
-//
-//                            try? arr.delete(at: 0)
-//                            let actual = arr.search(number: 0)
-//
-//                            expect(actual).to(beEmpty())
-//                        }
-//                    }
-//                }
+                context("when given index is out of bound") {
+                    it("throws a out of bound error") {
+                        var arr = OrderedArrayList()
+                        expect {try arr.delete(at: 0)}.to(throwError(OrderedArrayListError.OutOfBound))
+                    }
+                }
+
+                context("when array is not empty") {
+                    it("contains all remaining elements") {
+                        let expected = [3,1,7,0]
+                        var arr = OrderedArrayList(array: [0,7,3,4,1])
+
+                        try? arr.delete(at: 3)
+
+                        expect(arr.data).to(contain(expected))
+                    }
+
+                    context("when array is empty after deletion") {
+                        it("returns empty array when searched after deleted from array") {
+                            var arr = OrderedArrayList(array: [0])
+
+                            try? arr.delete(at: 0)
+                            let actual = arr.search(number: 0)
+
+                            expect(actual).to(beEmpty())
+                        }
+                    }
+                }
             }
 
             context("when looking for minimum") {
