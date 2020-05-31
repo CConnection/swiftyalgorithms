@@ -16,7 +16,7 @@ class SingleLinkedNode {
 protocol SingleLinkedList {
     func search(number: Int) -> SingleLinkedNode?
     mutating func insert(number: Int)
-    func delete(node: SingleLinkedNode)
+    mutating func delete(node: SingleLinkedNode)
     func min() -> Int?
     func max() -> Int?
     func predecessor(node: SingleLinkedNode) -> SingleLinkedNode?
@@ -67,9 +67,91 @@ struct UnorderedSingleLinkedList: SingleLinkedList {
         self.head = SingleLinkedNode(number)
         self.head!.next = currentHead
     }
-    func delete(node: SingleLinkedNode) {}
-    func min() -> Int? { return nil }
-    func max() -> Int? { return nil }
-    func predecessor(node: SingleLinkedNode) -> SingleLinkedNode? { return nil }
-    func successor(node: SingleLinkedNode) -> SingleLinkedNode? { return nil }
+    mutating func delete(node: SingleLinkedNode) {
+        if node === self.head {
+            self.head = self.head?.next
+        } else {
+            var current = self.head
+            while let next = current?.next, next !== node {
+                current = next
+            }
+
+            current?.next = current?.next?.next
+        }
+    }
+
+    func min() -> Int? {
+        var current = self.head
+        var currentMin = current?.number
+
+        while let currentNode = current, let minimum = currentMin {
+            if (currentNode.number < minimum) {
+                currentMin = currentNode.number
+            }
+            current = current?.next
+        }
+
+        return currentMin
+    }
+    func max() -> Int? {
+        var current = self.head
+        var currentMax = current?.number
+
+        while let currentNode = current, let maximum = currentMax {
+            if (currentNode.number > maximum) {
+                currentMax = currentNode.number
+            }
+            current = current?.next
+        }
+
+        return currentMax
+    }
+    func predecessor(node: SingleLinkedNode) -> SingleLinkedNode? {
+        var currentPreNode: SingleLinkedNode?
+
+        var iterator = self.head
+        while let iteratorNode = iterator {
+            if iteratorNode.number < node.number {
+                currentPreNode = iteratorNode
+                break
+            }
+
+            iterator = iterator?.next
+        }
+
+        iterator = self.head
+        while let iteratorNode = iterator, let currentPredecessorNode = currentPreNode {
+            if iteratorNode.number > currentPredecessorNode.number && iteratorNode.number < node.number {
+                currentPreNode = iteratorNode
+            }
+
+            iterator = iterator?.next
+        }
+
+        return currentPreNode
+    }
+    func successor(node: SingleLinkedNode) -> SingleLinkedNode? {
+        var currentSucNode: SingleLinkedNode?
+
+        var iterator = self.head
+        while let iteratorNode = iterator {
+            if iteratorNode.number > node.number {
+                currentSucNode = iteratorNode
+                break
+            }
+
+            iterator = iterator?.next
+        }
+
+        iterator = self.head
+        while let iteratorNode = iterator, let currentSuccessNode = currentSucNode {
+            if iteratorNode.number < currentSuccessNode.number && iteratorNode.number > node.number {
+                currentSucNode = iteratorNode
+            }
+
+            iterator = iterator?.next
+        }
+
+        return currentSucNode
+    }
 }
