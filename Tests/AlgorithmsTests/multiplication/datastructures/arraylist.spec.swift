@@ -456,92 +456,92 @@ class ArrayListTests: QuickSpec {
             }
 
             context("when searching for predecessor of an element") {
-//                context("when array is empty") {
-//                    it("returns empty array") {
-//                        let expected: [Int] = []
-//                        let arr = UnorderedArrayList(array: [5])
-//                        let actual = arr.predecessor(of: 0)
-//
-//                        expect(actual).to(be(expected))
-//                    }
-//                }
-//                context("when array is not empty") {
-//                    context("when predecessor is once in array") {
-//                        context("when predecessor in array is placed before given number") {
-//                            it("returns the predecessor") {
-//                                let expected = [0]
-//                                let arr = UnorderedArrayList(array: [1,0,5])
-//                                let actual = arr.predecessor(of: 2)
-//
-//                                expect(actual).to(elementsEqual(expected))
-//                            }
-//                        }
-//
-//                        context("when predecessor in array is placed after given number") {
-//                            it("returns the predecessor") {
-//                                let expected = [2]
-//                                let arr = UnorderedArrayList(array: [5,0,1])
-//                                let actual = arr.predecessor(of: 0)
-//
-//                                expect(actual).to(elementsEqual(expected))
-//                            }
-//                        }
-//
-//                    }
-//                    context("when multiple predecessor exist in the array") {
-//                        it("returns the predecessors") {
-//                            let expected = [2,3]
-//                            let arr = UnorderedArrayList(array: [5,0,1,1])
-//                            let actual = arr.predecessor(of: 0)
-//
-//                            expect(actual).to(elementsEqual(expected))
-//                        }
-//                    }
-//                }
+                context("when array is empty") {
+                    it("returns empty array") {
+                        let expected: [Int] = []
+                        let arr = OrderedArrayList(array: [5])
+                        let actual = arr.predecessor(of: 0)
+
+                        expect(actual).to(be(expected))
+                    }
+                }
+                context("when array is not empty") {
+                    context("when predecessor is once in array") {
+                        context("when predecessor in array is placed before given number") {
+                            it("returns the predecessor") {
+                                let expected = [0]
+                                let arr = OrderedArrayList(array: [0,1,5])
+                                let actual = arr.predecessor(of: 1)
+
+                                expect(actual).to(elementsEqual(expected))
+                            }
+                        }
+
+                        context("when predecessor in array is placed after given number") {
+                            it("returns the predecessor") {
+                                let expected = [1]
+                                let arr = OrderedArrayList(array: [0,1,5])
+                                let actual = arr.predecessor(of: 5)
+
+                                expect(actual).to(elementsEqual(expected))
+                            }
+                        }
+
+                    }
+                    context("when multiple predecessor exist in the array") {
+                        it("returns the predecessors") {
+                            let expected = [2,1]
+                            let arr = OrderedArrayList(array: [0,1,1,5])
+                            let actual = arr.predecessor(of: 5)
+
+                            expect(actual).to(elementsEqual(expected))
+                        }
+                    }
+                }
             }
 
             context("when searching for successor of an element") {
-//                context("when array is empty") {
-//                    it("returns empty array") {
-//                        let expected: [Int] = []
-//                        let arr = UnorderedArrayList(array: [5])
-//                        let actual = arr.successor(of: 0)
-//
-//                        expect(actual).to(be(expected))
-//                    }
-//                }
-//                context("when array is not empty") {
-//                    context("when successor is once in array") {
-//                        context("when successor in array is placed before given number") {
-//                            it("returns the successor") {
-//                                let expected = [0]
-//                                let arr = UnorderedArrayList(array: [5,6,1])
-//                                let actual = arr.successor(of: 2)
-//
-//                                expect(actual).to(elementsEqual(expected))
-//                            }
-//                        }
-//
-//                        context("when successor in array is placed after given number") {
-//                            it("returns the successor") {
-//                                let expected = [2]
-//                                let arr = UnorderedArrayList(array: [0,7,5])
-//                                let actual = arr.successor(of: 0)
-//
-//                                expect(actual).to(elementsEqual(expected))
-//                            }
-//                        }
-//                    }
-//                    context("when multiple successor exist in the array") {
-//                        it("returns the successors") {
-//                            let expected = [2,3]
-//                            let arr = UnorderedArrayList(array: [5,0,1,1])
-//                            let actual = arr.successor(of: 1)
-//
-//                            expect(actual).to(elementsEqual(expected))
-//                        }
-//                    }
-//                }
+                context("when array is empty") {
+                    it("returns empty array") {
+                        let expected: [Int] = []
+                        let arr = OrderedArrayList(array: [5])
+                        let actual = arr.successor(of: 0)
+
+                        expect(actual).to(be(expected))
+                    }
+                }
+                context("when array is not empty") {
+                    context("when successor is once in array") {
+                        context("when successor in array is placed before given number") {
+                            it("returns the successor") {
+                                let expected = [2]
+                                let arr = OrderedArrayList(array: [1,5,6])
+                                let actual = arr.successor(of: 5)
+
+                                expect(actual).to(elementsEqual(expected))
+                            }
+                        }
+
+                        context("when successor in array is placed after given number") {
+                            it("returns the successor") {
+                                let expected = [1]
+                                let arr = OrderedArrayList(array: [0,5,7])
+                                let actual = arr.successor(of: 0)
+
+                                expect(actual).to(elementsEqual(expected))
+                            }
+                        }
+                    }
+                    context("when multiple successor exist in the array") {
+                        it("returns the successors") {
+                            let expected = [1,2]
+                            let arr = OrderedArrayList(array: [0,1,1,5])
+                            let actual = arr.successor(of: 0)
+
+                            expect(actual).to(elementsEqual(expected))
+                        }
+                    }
+                }
             }
         }
     }

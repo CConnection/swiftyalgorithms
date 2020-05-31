@@ -5,7 +5,7 @@
 
 import Foundation
 
-protocol Dictionary {
+protocol ArrayDictionary {
     func search(number: Int) -> [Int]
     mutating func insert(number: Int)
     mutating func delete(at index: Int) throws
@@ -19,7 +19,7 @@ enum UnorderedArrayListError: Error {
     case OutOfBound
 }
 
-struct UnorderedArrayList: Dictionary {
+struct UnorderedArrayList: ArrayDictionary {
     var data: [Int]
 
     init() {
@@ -168,7 +168,7 @@ enum OrderedArrayListError: Error {
 }
 
 
-struct OrderedArrayList {
+struct OrderedArrayList: ArrayDictionary {
     var data: [Int]
 
     init() {
@@ -234,6 +234,38 @@ struct OrderedArrayList {
         return data.last
     }
 
-    func predecessor(of number: Int) -> [Int] { return []}
-    func successor(of number: Int) -> [Int] { return []}
+    func predecessor(of number: Int) -> [Int] {
+        var result: [Int] = []
+
+        let index = data.firstIndex(of: number)
+
+        if let numberIndex = index, numberIndex > 0 {
+            var predecessorIndex = numberIndex - 1
+            let predecessorValue = data[predecessorIndex]
+            
+            repeat  {
+                result.append(predecessorIndex)
+                predecessorIndex -= 1
+            } while predecessorIndex >= 0 && predecessorValue == data[predecessorIndex]
+        }
+
+        return result
+    }
+    func successor(of number: Int) -> [Int] {
+        var result: [Int] = []
+
+        let index = data.lastIndex(of: number)
+
+        if let numberIndex = index, numberIndex < data.count - 1 {
+            var successorIndex = numberIndex + 1
+            let successorValue = data[successorIndex]
+
+            repeat  {
+                result.append(successorIndex)
+                successorIndex += 1
+            } while successorIndex <= data.count - 1 && successorValue == data[successorIndex]
+        }
+
+        return result
+    }
 }
